@@ -1,5 +1,5 @@
-
-.srfrndtag-input{background: none repeat scroll 0 0 #FAFAFA;
+.tagAFrnd-input{
+	background: none repeat scroll 0 0 #FAFAFA;
     border: 1px solid #DDDDDD;
     border-radius: 4px 4px 4px 4px;
     display: block;
@@ -8,9 +8,12 @@
     width: 100%;height: 60px;cursor: text;
 	border: thin solid #444;
 }
-.srfrndtag-input:FOCUS {
+.tagAFrnd-input:FOCUS {
 	outline: 0;
 }
-.srfrndtag-input .tag{background-color: #CFCFCF;
-padding: 3px 5px;
-border-radius: 3px;}
+
+.tagAFrnd-input .tag{
+	background-color: #CFCFCF;
+	padding: 3px 5px;
+	border-radius: 3px;
+}

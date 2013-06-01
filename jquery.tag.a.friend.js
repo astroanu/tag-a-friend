@@ -1,8 +1,8 @@
 (function($) {
-	$.fn.srfrndtag = function(options) {
+	$.fn.tagAFrnd = function(options) {
 		var inp = $(this);
-		var replacername = inp.attr('id')+'-srfrndtag';
-		inp.before('<div id="'+replacername+'" class="srfrndtag-input" contentEditable="true"></div>');
+		var replacername = inp.attr('id')+'-tagAFrnd';
+		inp.before('<div id="'+replacername+'" class="tagAFrnd-input" contentEditable="true"></div>');
 		var replacer = $('div#'+replacername);
 		var lastEl = '';
 		var elems = [];
@@ -23,40 +23,38 @@
 		        range.select();
 		    }
 		}
-					function strip(html){
-			   var tmp = document.createElement("DIV");
-			   tmp.innerHTML = html;
-			   return tmp.textContent||tmp.innerText;
-			}
+		
+		function strip(html){
+			var tmp = document.createElement("DIV");
+			tmp.innerHTML = html;
+			return tmp.textContent||tmp.innerText;
+		}
 			
-		function getCaretPosition(ctrl) {
-    var start, end;
-    if (ctrl.setSelectionRange) {
-        start = ctrl.selectionStart;
-        end = ctrl.selectionEnd;
-    } else if (document.selection && document.selection.createRange) {
-        var range = document.selection.createRange();
-        start = 0 - range.duplicate().moveStart('character', -100000);
-        end = start + range.text.length;
-    }
-    return {
-        start: start,
-        end: end
-    }
-}
+		function getCaretPosition(ctrl){
+    		var start, end;
+    		if (ctrl.setSelectionRange){
+        		start = ctrl.selectionStart;
+        		end = ctrl.selectionEnd;
+    		}else if (document.selection && document.selection.createRange) {
+        		var range = document.selection.createRange();
+        		start = 0 - range.duplicate().moveStart('character', -100000);
+        		end = start + range.text.length;
+    		}
+    		return {
+        		start: start,
+        		end: end
+    		}
+		}
 
 		function getLastWord(elem){
 			var caret = getCaretPosition(elem);
-var str = elem.text();
-console.log(str);
-    var result = /\S+$/.exec(str.slice(0, caret.start));
-    var lastWord = result ? result[0] : null;
-	console.log(lastWord);
-    return lastWord;
+			var str = elem.text();
+    		var result = /\S+$/.exec(str.slice(0, caret.start));
+    		var lastWord = result ? result[0] : null;
+    		return lastWord;
 		}
 		
 		function format(){
-			/*inp.val(text+" [@"+ui.item.value+"] ");*/
 			var post = replacer.html().replace(new RegExp('<span class="tag" contenteditable="false" data-id="([a-z0-9]+)">[a-z0-9 ]+</span>','g'),'[@$1]');
 			var post = post.replace(new RegExp('&nbsp;','g'),' ');
 			inp.val(post);
@@ -64,9 +62,7 @@ console.log(str);
 
 		replacer.on('click keyup', function(){
 			var req = replacer.html();
-			//console.log(req);
 	    	elems = req.split(" ");
-	    	//lastEl = strip(elems.slice(-1)[0]);
 			lastEl = getLastWord(replacer);
 	    	if(lastEl != undefined){
 		    	var lastchr = lastEl.substring(0, 1);
@@ -82,7 +78,7 @@ console.log(str);
 		replacer.autocomplete({
 			source: function( request, response ) {
 				$.ajax({
-					url: "json.json",
+					url: "sample_data.json",
 					dataType: "json",
 					data: {
 						q: function(){
@@ -114,11 +110,10 @@ console.log(str);
 		    	moveCursorToEnd(replacer);
 			},
 			open: function() {
-				$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-				//$('.ui-autocomplete').width($(this).width());
+				$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
 			},
 			close: function() {
-				$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+				$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
 			}
 		});
 	}
