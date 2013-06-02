@@ -1,3 +1,12 @@
+/*!
+ * tag.a.friend for jQuery v1.0.0
+ * https://github.com/astroanu/tag-a-friend
+ *
+ * Requires jquery, jquery-ui, jquery-ui-autocomplete, jquery-ui-menu
+ *
+ * Date: 06-01-2013
+ */
+ 
 (function($) {
 	$.fn.tagAFrnd = function(options) {
 		var opts = $.extend({}, $.fn.tagAFrnd.defaults, options);
@@ -13,6 +22,8 @@
 		var replacer = $('div#'+replacername);
 		var lastEl = '';
 		var elems = [];
+		
+		if(!o.debug){inp.hide();}
 		
 		function moveCursorToEnd(contentEditableElement){
 		    var range,selection;
@@ -60,8 +71,9 @@
     		return lastWord;
 		}
 		
-		function format(tagFormat){
-			var post = replacer.html().replace(new RegExp('<span class="tag" contenteditable="false" data-id="([a-z0-9]+)">[a-z0-9 ]+</span>','g'),tagFormat);
+		function format(){
+			var post = replacer.html().replace(new RegExp('<A href="mailto:([@a-z]+)">[@a-z]+</A>','g'),'$1');
+			var post = post.replace(new RegExp('(<span|<SPAN) class=("tag"|tag) (contentEditable|contenteditable)=("false"|false) data-id="([a-z0-9]+)">[a-z0-9 ]+</(span|SPAN)>','g'),'[@$5]');
 			var post = post.replace(new RegExp('&nbsp;','g'),' ');
 			inp.val(post);
 		}
@@ -78,7 +90,7 @@
 		    		replacer.autocomplete( "disable" );
 		    	}
 	    	}
-			format(o.tagFormat);
+			format();
 		});
 		
 		replacer.autocomplete({
@@ -111,21 +123,19 @@
 		    	var text = elems;
 		    	text.pop();
 		    	text = text.join(" ");
-				replacer.html(text+' <span class="tag" contenteditable="false" data-id="'+ui.item.value+'">'+ui.item.label+'</span>&nbsp;');
-				format(o.tagFormat);
+				replacer.html(text+' <span class="tag" contentEditable="false" data-id="'+ui.item.value+'">'+ui.item.label+'</span>&nbsp;');
+				format();
 		    	moveCursorToEnd(replacer);
 			},
-			open: function() {
-				$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-			},
-			close: function() {
-				$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-			}
+			open: o.open,
+			close: o.close
 		});
 		
 		$.fn.tagAFrnd.defaults = {
 		  ajaxPath: null,
-		  tagFormat: '[@$1]'
+		  debug:false,
+		  open:function(){},
+		  close:function(){}
 		};
 	}
 })(jQuery);

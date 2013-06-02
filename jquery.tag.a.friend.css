@@ -12,6 +12,11 @@
 	outline: 0;
 }
 
+.tagAFrnd-input a{
+	text-decoration: none;
+	color: auto;
+}
+
 .tagAFrnd-input .tag{
 	background-color: #CFCFCF;
 	padding: 3px 5px;
