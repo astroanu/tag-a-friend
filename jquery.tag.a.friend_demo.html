@@ -10,7 +10,9 @@
 <script type="text/javascript" src="jquery.tag.a.friend.js"></script>
 <script type="text/javascript">
 $(function(){
-	$('#postbox').tagAFrnd();
+	$('#postbox').tagAFrnd({
+		ajaxPath:'sample_data.json'
+	});
 });
 </script>
 </head>
